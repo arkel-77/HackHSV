@@ -19,7 +19,7 @@ names = [unselected, add]
 def add(ssn):
    patients.add_patient(ssn)
 def combined_func(ssn,window):
-   add(var)
+   add(ssn)
    window.destroy()
    
 def doStuff(var):
