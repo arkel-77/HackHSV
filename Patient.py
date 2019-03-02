@@ -3,41 +3,56 @@ import os
 
 class Patient:
     def __init__(self, SSN: str):
-        try:
-            self.file_read = open(SSN + '.txt')
-        except:
-            self.file_write = open(SSN + '.txt', 'at')
-            self.file_write.write('SSN:;' + SSN)
-            self.file_read = open(SSN + '.txt')
+        self.file_write = open(SSN + '.txt', 'at')
+        self.file_read = open(SSN + '.txt')
         self.ssn = SSN
-        self.attributesAndValues = [line for line in self.file_write.read().split('\n')]
+        self.attributesAndValues = [line for line in self.file_read.read().split(',^')]
         self.attributedValues = [line.split(':;') for line in self.attributesAndValues]
-        self.attributeIndex = [i[0] for i in self.attributedValues]
-        self.valuesIndex = [i[1] for i in self.attributedValues]
+        try:
+            self.attributeIndex = [i[0] for i in self.attributedValues]
+            self.valuesIndex = [i[1] for i in self.attributedValues]
+        except IndexError:
+            self.attributeIndex = []
+            self.valuesIndex = []
+
+        self.assert_attribute('SSN', SSN)
+        self.assert_attribute('First Name')
+        self.assert_attribute('Last Name')
+        self.assert_attribute('Medical History')
+        self.assert_attribute('Birth Date')
+        self.assert_attribute('Current Medicines')
+
+    def change_attribute(self, attribute, value):
+        if attribute not in self.attributeIndex:
+            self.attributeIndex.append(attribute)
+            self.valuesIndex.append(value)
+            self.file_write.write(',^' + str(attribute) + ':;' + str(value))
+        else:
+            file_data = self.file_read.read()
+            old_attval = attribute + ':;' + self.valuesIndex[self.attributeIndex.index(attribute)]
+            new_attval = attribute + ':;' + value
+            self.valuesIndex[self.attributeIndex.index(attribute)] = value
+            file_data = file_data.replace(old_attval, new_attval)
+            self.file_write = open(self.ssn + '.txt', 'wt')
+            self.file_write.write(file_data)
+
+    def all_attributes(self):
+        for i in range(len(self.attributeIndex)):
+            yield self.attributeIndex[i] + ':;' + self.valuesIndex[i]
+
+    def assert_attribute(self, attribute: str, default: str=' '):
+        if self.get_attribute(attribute) is None:
+            self.change_attribute(attribute, default)
+
+    def delete(self):
+        os.remove(self.ssn + '.txt')
+        del self
 
     def get_attribute(self, attribute):
         if attribute in self.attributeIndex:
             return self.valuesIndex[self.attributeIndex.index(attribute)]
         else:
             return None
-
-    def add_or_modify_attribute(self, attribute, value):
-        if attribute not in self.attributeIndex:
-            self.attributeIndex.append(attribute)
-            self.valuesIndex.append(value)
-            self.file_write.write('\n' + str(attribute) + ':;' + str(value))
-        else:
-            filedata = self.file_read.read()
-            old_attval = attribute + ':;' + self.valuesIndex[self.attributeIndex.index(attribute)]
-            new_attval = attribute + ':;' + value
-            self.valuesIndex[self.attributeIndex.index(attribute)] = value
-            filedata = filedata.replace(old_attval, new_attval)
-            self.file_write = open(self.ssn + '.txt', 'wt')
-            self.file_write.write(filedata)
-
-    def delete(self):
-        os.remove(self.ssn + '.txt')
-        del self
 
     @property
     def name(self):
@@ -66,9 +81,5 @@ class Patient:
                     return ln
                 else:
                     return ''
-
-    def all_attributes(self):
-        for i in range(len(self.attributeIndex)):
-            yield self.attributeIndex[i] + ':;' + self.valuesIndex[i]
 
     pass

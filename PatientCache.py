@@ -6,18 +6,11 @@ class Cache:
         self.file = open('cache.txt', 'at')
         self.file = open('cache.txt')
         patients = [line for line in self.file.read().split('\n')]
-        patients = [line.split(';:') for line in patients]
         self.patients = []
         for patient in patients:
-            temp = [attval.split(':;') for attval in patient]
-            try:
-                ssn = temp[0][1]
-                a = Patient(ssn)
-                for attval in temp[1:]:
-                    a.add_or_modify_attribute(attval[0], attval[1])
-                self.patients.append(a)
-            except IndexError:
-                pass
+            ssn = patient.split(':;')[1]
+            a = Patient(ssn)
+            self.patients.append(a)
         self.file = open('cache.txt', 'at')
 
     def add_patient(self, patient: Patient):
