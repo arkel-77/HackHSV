@@ -21,8 +21,9 @@ class Patient:
         self.assert_attribute('Medical History')
         self.assert_attribute('Birth Date')
         self.assert_attribute('Current Medicines')
+        self.assert_attribute('Schedule')
 
-    def change_attribute(self, attribute, value):
+    def change_attribute(self, attribute: str, value: str):
         if attribute not in self.attributeIndex:
             self.attributeIndex.append(attribute)
             self.valuesIndex.append(value)
@@ -35,14 +36,12 @@ class Patient:
             file_data = file_data.replace(old_attval, new_attval)
             self.file_write = open(self.ssn + '.txt', 'wt')
             self.file_write.write(file_data)
-
-    def all_attributes(self):
-        for i in range(len(self.attributeIndex)):
-            yield self.attributeIndex[i] + ':;' + self.valuesIndex[i]
+        self.file_read = open(self.ssn + '.txt')
 
     def assert_attribute(self, attribute: str, default: str=' '):
         if self.get_attribute(attribute) is None:
             self.change_attribute(attribute, default)
+        self.file_read = open(self.ssn + '.txt')
 
     def delete(self):
         os.remove(self.ssn + '.txt')
@@ -83,3 +82,4 @@ class Patient:
                     return ''
 
     pass
+
