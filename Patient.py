@@ -1,12 +1,12 @@
 class Patient:
     def __init__(self, SSN: str):
-        self.file = open(SSN+'.txt', 'at')
-        self.file = open(SSN+'.txt')
+        self.file = open(SSN + '.txt', 'at')
+        self.file = open(SSN + '.txt')
         self.ssn = SSN
         self.attributesAndValues = [line.split(':;') for line in self.file.read().split('\n')]
         self.attributeIndex = [i[0] for i in self.attributesAndValues]
         self.valuesIndex = [i[1] for i in self.attributesAndValues]
-        self.file = open(SSN+'.txt', 'at')
+        self.file = open(SSN + '.txt', 'at')
 
     def get_attribute(self, attribute):
         if attribute in self.attributeIndex:
@@ -18,4 +18,14 @@ class Patient:
         if attribute not in self.attributeIndex:
             self.attributeIndex.append(attribute)
             self.valuesIndex.append(value)
-            self.file.write('\n'+str(attribute) + ':;' + str(value))
+            self.file.write('\n' + str(attribute) + ':;' + str(value))
+
+    @property
+    def name(self):
+        fn = self.get_attribute('First Name')
+        mn = self.get_attribute('Middle Name')
+        ln = self.get_attribute('Last Name')
+        if mn is not None:
+            return fn + ' ' + mn + ' ' + ln
+        else:
+            return fn + ' ' + ln
