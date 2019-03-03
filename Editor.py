@@ -7,6 +7,7 @@ class Editor(GUI):
         super().__init__(dimensions, title=patient.name + ' info')
         self.patient = patient
         self.addField = Button(self.context,text="Add field",command=self.add_field).grid(row=0,column=2)
+        self.delete = Button(self.context,text="Delete from records").grid(row=1,column=2)
         self.labels = []
         self.entries = []
         for i in range(len(patient.attributeIndex)):
