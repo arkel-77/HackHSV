@@ -6,7 +6,7 @@ class Editor(GUI):
     def __init__(self, patient, dimensions='800x1400'):
         super().__init__(dimensions, title=patient.name + ' info')
         self.patient = patient
-        self.addField = Button(self.context,text="Add field",command=self.add_field).grid(row=len(patient.attributeIndex),column=1)
+        self.addField = Button(self.context,text="Add field",command=self.add_field).grid(row=0,column=2)
         self.labels = []
         self.entries = []
         for i in range(len(patient.attributeIndex)):
@@ -20,7 +20,6 @@ class Editor(GUI):
         self.labels.append(Label(self.context,text=field+": ").grid(row=len(self.patient.attributeIndex)-1,column=0))
         self.entries.append(Entry(self.context,textvariable=StringVar(self.context,value=self.patient.valuesIndex[len(self.patient.attributeIndex)-1])).grid(row=len(self.patient.attributeIndex)-1,column=1))
         self.addField.destroy()
-        self.addField = Button(self.context,text="Add field",command=self.add_field).grid(row=len(self.patient.attributeIndex),column=1)
         screen.destroy()
     def add_field(self):
         add_screen = Tk()
