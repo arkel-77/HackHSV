@@ -54,6 +54,7 @@ class Patient:
         file_data = file_data.replace(',^' + old_attval, '')
         self.file_write = open(self.ssn + '.txt')
         self.file_write.write(file_data)
+        self.__init__(self.ssn)
 
     def get_attribute(self, attribute: str):
         if attribute in self.attributeIndex:
