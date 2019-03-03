@@ -48,7 +48,16 @@ class Patient:
         os.remove(self.ssn + '.txt')
         del self
 
-    def get_attribute(self, attribute):
+    def remove_attribute(self, attribute: str):
+        file_data = self.file_read.read()
+        old_val = self.valuesIndex[self.attributeIndex.index(attribute)]
+        old_attval = attribute + ':;' + old_val
+        file_data = file_data.replace(',^' + old_attval, '')
+        self.file_write = open(self.ssn + '.txt')
+        self.file_write.write(file_data)
+        self.__init__(self.ssn)
+
+    def get_attribute(self, attribute: str):
         if attribute in self.attributeIndex:
             return self.valuesIndex[self.attributeIndex.index(attribute)]
         else:
