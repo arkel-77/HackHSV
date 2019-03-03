@@ -8,9 +8,12 @@ class Cache:
         patients = [line for line in self.file.read().split('\n')]
         self.patients = []
         for patient in patients:
-            ssn = patient.split(':;')[1]
-            a = Patient(ssn)
-            self.patients.append(a)
+            try:
+                ssn = patient.split(':;')[1]
+                a = Patient(ssn)
+                self.patients.append(a)
+            except IndexError:
+                pass
         self.file = open('cache.txt', 'at')
 
     def add_patient(self, patient: Patient):

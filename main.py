@@ -15,13 +15,12 @@ patientCache = Cache()
 #names list
 names = [unselected, add]
 #drop options
-#def edit(ssn):
 def add(ssn):
-   patients.add_patient(ssn)
+   patientCache.add_patient(Patient(ssn))
 def combined_func(ssn,window):
    add(ssn)
    window.destroy()
-   
+   edit(ssn)
 def doStuff(var):
    print(var=="Add a patient (+)")
    if var=="Add a patient (+)":
@@ -31,9 +30,10 @@ def doStuff(var):
       SSNLabel.grid(row=0,column=0)
       SSN=Entry(addScreen)
       SSN.grid(row=0,column=1)
-      submit=Button(addScreen, text="submit",command=lambda:combined_func(SSN.get()))
+      submit=Button(addScreen, text="submit",command=lambda:combined_func(SSN.get(),addScreen))
       submit.grid(row=0,column=2)
       addScreen.mainloop()
+      
 selecter = dropDown(mainWindow,names,0,0)
 while(1):
    if selecter.checkclicked():
