@@ -8,6 +8,7 @@ class Patient:
         self.ssn = SSN
         self.attributesAndValues = [line for line in self.file_read.read().split(',^')]
         self.attributedValues = [line.split(':;') for line in self.attributesAndValues]
+        print(self.attributedValues)
         try:
             self.attributeIndex = [i[0] for i in self.attributedValues]
             self.valuesIndex = [i[1] for i in self.attributedValues]
